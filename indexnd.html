@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOKHALE AIRLINES | Book Domestic Flights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A2647;
+  --navy-2:#0F3460;
+  --blue:#145DA0;
+  --sky:#2E86DE;
+  --orange:#FF8A00;
+  --orange-dark:#E56E00;
+  --bg:#EEF2F8;
+  --card:#FFFFFF;
+  --line:#DDE4EE;
+  --ink:#152238;
+  --muted:#7C8AA0;
+  --muted-2:#98A3B5;
+  --success:#1B9C63;
+  --danger:#E5484D;
+  --radius:14px;
+  --shadow: 0 8px 24px rgba(10,38,71,0.08);
+  --shadow-lg: 0 20px 48px rgba(10,38,71,0.18);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:'Baloo 2',sans-serif;margin:0;color:var(--navy);}
+button{font-family:inherit;cursor:pointer;}
+input,select{font-family:inherit;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+a{color:inherit;}
+.wrap{max-width:1280px;margin:0 auto;padding:0 28px;}
+
+/* ---------- TOP NAV ---------- */
+.topnav{
+  background:linear-gradient(120deg,var(--navy) 0%,var(--navy-2) 100%);
+  color:#fff;
+  padding:14px 0;
+}
+.topnav .wrap{display:flex;align-items:center;justify-content:space-between;}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px;letter-spacing:0.2px;}
+.brand .plane-badge{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--orange);
+  display:flex;align-items:center;justify-content:center;
+  transform:rotate(-8deg);
+  box-shadow:0 4px 10px rgba(255,138,0,0.4);
+  font-size:18px;
+}
+.brand small{display:block;font-family:'Inter';font-weight:500;font-size:10.5px;color:#AFC3E0;letter-spacing:1.4px;text-transform:uppercase;margin-top:-2px;}
+.navlinks{display:flex;gap:26px;font-size:14.5px;font-weight:600;color:#C6D4EA;}
+.navlinks span.active{color:#fff;border-bottom:2px solid var(--orange);padding-bottom:4px;}
+.trust-bar{background:#fff;border-bottom:1px solid var(--line);}
+.trust-bar .wrap{display:flex;gap:22px;padding:8px 28px;font-size:12px;color:var(--muted);flex-wrap:wrap;}
+.trust-bar b{color:var(--success);}
+
+/* ---------- SEARCH PANEL ---------- */
+.search-section{padding:26px 0 10px;}
+.search-card{
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:20px 22px 18px;
+}
+.trip-toggle{display:flex;gap:22px;margin-bottom:14px;}
+.trip-toggle label{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;color:var(--navy);cursor:pointer;}
+.trip-toggle input{accent-color:var(--orange);width:15px;height:15px;}
+
+.search-grid{
+  display:grid;
+  grid-template-columns: 1.3fr 1.3fr 1fr 1fr auto;
+  gap:14px;
+  align-items:end;
+}
+.field-group{position:relative;}
+.field-group label{display:block;font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;}
+.field-group select,.field-group input[type=date]{
+  width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;
+  font-size:14.5px;font-weight:600;color:var(--ink);background:#FAFCFF;
+}
+.field-group select:focus,.field-group input:focus{outline:none;border-color:var(--sky);}
+.swap-btn{
+  position:absolute;right:-10px;top:29px;
+  width:26px;height:26px;border-radius:50%;
+  background:var(--sky);color:#fff;border:3px solid #fff;
+  display:flex;align-items:center;justify-content:center;font-size:12px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);z-index:2;
+}
+.return-field.disabled{opacity:0.4;pointer-events:none;}
+.travelers-btn{
+  padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;background:#FAFCFF;
+  font-size:13px;font-weight:600;text-align:left;width:100%;color:var(--ink);
+}
+.travelers-pop{
+  position:absolute;top:56px;left:0;width:280px;background:#fff;border-radius:12px;
+  box-shadow:var(--shadow-lg);padding:16px;z-index:20;border:1px solid var(--line);
+}
+.travelers-pop[hidden]{display:none;}
+.tp-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;}
+.tp-row span{font-size:13.5px;font-weight:600;}
+.tp-row small{display:block;color:var(--muted-2);font-weight:400;font-size:11px;}
+.stepper-count{display:flex;align-items:center;gap:10px;}
+.stepper-count button{
+  width:26px;height:26px;border-radius:50%;border:1.5px solid var(--sky);background:#fff;color:var(--sky);font-weight:700;
+}
+.tp-class{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px;}
+.tp-class label{
+  border:1.5px solid var(--line);border-radius:20px;padding:5px 11px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);
+}
+.tp-class input{display:none;}
+.tp-class input:checked + span{color:var(--blue);}
+.tp-class label:has(input:checked){border-color:var(--sky);background:#EAF3FF;color:var(--blue);}
+.tp-apply{width:100%;background:var(--orange);color:#fff;border:none;padding:9px;border-radius:8px;font-weight:700;font-size:13.5px;}
+
+.search-btn{
+  background:linear-gradient(120deg,var(--orange) 0%,var(--orange-dark) 100%);
+  color:#fff;border:none;border-radius:9px;padding:12px 22px;font-weight:700;font-size:15px;
+  box-shadow:0 6px 16px rgba(255,138,0,0.35);white-space:nowrap;
+}
+.search-btn:active{transform:translateY(1px);}
+
+/* ---------- RESULTS ---------- */
+.results-section{padding:18px 0;}
+.results-section[hidden]{display:none;}
+.section-eyebrow{font-size:11.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.flight-card{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:18px 22px;display:flex;align-items:center;gap:22px;justify-content:space-between;flex-wrap:wrap;
+}
+.fc-airline{display:flex;align-items:center;gap:10px;min-width:150px;}
+.fc-airline .logo{width:34px;height:34px;border-radius:8px;background:var(--navy);color:var(--orange);display:flex;align-items:center;justify-content:center;font-weight:800;}
+.fc-airline div b{display:block;font-size:13.5px;}
+.fc-airline div span{font-size:11.5px;color:var(--muted);}
+.fc-route{display:flex;align-items:center;gap:14px;flex:1;min-width:260px;justify-content:center;}
+.fc-time{text-align:center;}
+.fc-time b{font-size:19px;font-family:'IBM Plex Mono';}
+.fc-time span{display:block;font-size:11.5px;color:var(--muted);margin-top:2px;}
+.fc-path{display:flex;flex-direction:column;align-items:center;color:var(--muted-2);min-width:90px;}
+.fc-path .dur{font-size:11px;margin-bottom:2px;}
+.fc-path .dots{width:100%;border-top:1.5px dashed var(--muted-2);position:relative;margin:4px 0;}
+.fc-path .dots:after{content:'✈';position:absolute;right:-2px;top:-9px;color:var(--sky);font-size:13px;}
+.fc-fare{text-align:right;min-width:130px;}
+.fc-fare .price{font-size:21px;font-weight:800;color:var(--navy);font-family:'IBM Plex Mono';}
+.fc-fare span{font-size:11px;color:var(--muted);}
+.select-btn{
+  background:var(--blue);color:#fff;border:none;padding:11px 20px;border-radius:9px;font-weight:700;font-size:14px;margin-top:6px;
+}
+#resultsList .flight-card{margin-bottom:12px;}
+
+/* ---------- STEPPER ---------- */
+.booking-section{padding:8px 0 60px;}
+.booking-section[hidden]{display:none;}
+.stepper{position:relative;padding:22px 40px;margin-bottom:20px;}
+.stepper-track{display:flex;justify-content:space-between;position:relative;}
+.stepper-line{position:absolute;top:17px;left:6%;right:6%;height:3px;background:var(--line);border-radius:3px;z-index:0;}
+.stepper-progress{height:100%;background:linear-gradient(90deg,var(--sky),var(--orange));border-radius:3px;width:0%;transition:width .5s ease;}
+.plane-marker{position:absolute;top:6px;left:6%;font-size:19px;transition:left .5s ease;transform:translateX(-50%) rotate(90deg);filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));}
+.step-node{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;width:120px;}
+.node-dot{
+  width:36px;height:36px;border-radius:50%;background:#fff;border:3px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--muted-2);font-size:14px;
+}
+.step-node.active .node-dot{border-color:var(--sky);color:var(--sky);}
+.step-node.done .node-dot{border-color:var(--success);background:var(--success);color:#fff;}
+.node-label{font-size:12px;font-weight:700;color:var(--muted);text-align:center;}
+.step-node.active .node-label{color:var(--navy);}
+
+/* ---------- BOOKING GRID ---------- */
+.booking-grid{display:grid;grid-template-columns: 1fr 340px;gap:22px;align-items:start;}
+.step-panel{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px;}
+.step-panel[hidden]{display:none;}
+.step-panel h3{font-size:18px;margin-bottom:4px;}
+.step-sub{font-size:12.5px;color:var(--muted);margin-bottom:16px;}
+
+/* boarding pass card */
+.boarding-pass{
+  position:relative;border:1.5px dashed #C7D3E6;border-radius:12px;padding:18px 20px;background:#F8FBFF;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px;
+}
+.boarding-pass:before,.boarding-pass:after{
+  content:'';position:absolute;width:20px;height:20px;background:var(--card);border-radius:50%;top:50%;transform:translateY(-50%);
+}
+.boarding-pass:before{left:-10px;} .boarding-pass:after{right:-10px;}
+.bp-city{text-align:center;}
+.bp-city b{font-size:26px;font-family:'IBM Plex Mono';color:var(--navy);}
+.bp-city span{display:block;font-size:11px;color:var(--muted);margin-top:2px;max-width:130px;}
+.bp-mid{flex:1;text-align:center;color:var(--muted-2);}
+.bp-mid .flightno{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:1px;margin-bottom:4px;}
+.bp-mid .dashline{border-top:1.5px dashed var(--muted-2);position:relative;margin:6px 10px;}
+.bp-mid .dashline:after{content:'✈';position:absolute;right:0;top:-9px;color:var(--sky);}
+.bp-meta{display:flex;gap:18px;font-size:12px;color:var(--muted);flex-wrap:wrap;}
+.bp-meta b{display:block;color:var(--ink);font-size:13.5px;}
+
+.fare-breakup{border-top:1px solid var(--line);padding-top:12px;font-size:13.5px;}
+.fb-row{display:flex;justify-content:space-between;padding:5px 0;color:var(--muted);}
+.fb-row b{color:var(--ink);font-family:'IBM Plex Mono';}
+.fb-total{border-top:1px solid var(--line);margin-top:6px;padding-top:9px;display:flex;justify-content:space-between;font-size:15.5px;font-weight:800;color:var(--navy);}
+
+/* traveler cards */
+.traveler-card{border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px;background:#FCFDFF;}
+.traveler-card h4{font-size:14.5px;display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.traveler-card h4 .badge{background:var(--sky);color:#fff;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:10px;font-family:'Inter';}
+.form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.form-grid.g3{grid-template-columns:repeat(3,1fr);}
+.form-grid.g2{grid-template-columns:repeat(2,1fr);}
+.ff{display:flex;flex-direction:column;gap:5px;}
+.ff label{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
+.ff input,.ff select{padding:9px 10px;border:1.5px solid var(--line);border-radius:8px;font-size:13.5px;color:var(--ink);background:#fff;}
+.ff input:focus,.ff select:focus{outline:none;border-color:var(--sky);}
+input:disabled,select:disabled{opacity:0.5;cursor:not-allowed;}
+.ff input:disabled,.ff select:disabled{background:#F0F2F6;}
+.gender-row label:has(input:disabled){opacity:0.5;cursor:not-allowed;}
+.gender-row{display:flex;gap:14px;padding-top:2px;}
+.gender-row label{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--ink);}
+.gender-row input{accent-color:var(--blue);}
+.age-hint{font-size:11px;color:var(--muted-2);margin-top:2px;}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer;text-align:center;}
+.chip input{display:none;}
+.chip:has(input:checked){border-color:var(--sky);background:#EAF3FF;color:var(--blue);}
+
+.contact-block{border-top:1px dashed var(--line);margin-top:6px;padding-top:16px;}
+.gst-toggle{font-size:12.5px;font-weight:600;color:var(--blue);cursor:pointer;display:inline-block;margin-top:8px;}
+.gst-fields{margin-top:10px;}
+.gst-fields[hidden]{display:none;}
+
+/* add-ons */
+.urgency-timer{
+  display:flex;align-items:center;gap:10px;background:#FFF4E8;border:1px solid #FFD9A8;color:var(--orange-dark);
+  padding:9px 14px;border-radius:10px;font-size:13px;font-weight:600;margin-bottom:18px;
+}
+.urgency-timer .clock{font-family:'IBM Plex Mono';font-weight:700;font-size:14.5px;}
+.addon-card{
+  display:flex;align-items:center;gap:14px;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px;
+  transition:border-color .15s;
+}
+.addon-card:has(input:checked){border-color:var(--sky);background:#F5FAFF;}
+.addon-card .icon{width:40px;height:40px;border-radius:10px;background:#EAF3FF;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.addon-card .info{flex:1;}
+.addon-card .info b{font-size:14px;display:block;}
+.addon-card .info span{font-size:12px;color:var(--muted);}
+.addon-card .price{font-size:14px;font-weight:700;color:var(--navy);white-space:nowrap;}
+.addon-card input[type=checkbox]{width:20px;height:20px;accent-color:var(--sky);}
+
+/* the subtle default-opted-in insurance line — intentionally understated fine-print styling */
+.insurance-fineprint{
+  display:flex;align-items:flex-start;gap:7px;padding:8px 2px 14px;margin-bottom:6px;
+  border-bottom:1px solid var(--line);
+}
+.insurance-fineprint input{width:12px;height:12px;margin-top:2px;accent-color:var(--muted-2);}
+.insurance-fineprint label{font-size:11px;line-height:1.5;color:var(--muted-2);font-weight:400;}
+
+.pay-form{border-top:1px dashed var(--line);padding-top:16px;margin-top:6px;}
+.make-payment-btn{
+  width:100%;background:linear-gradient(120deg,var(--orange),var(--orange-dark));color:#fff;border:none;
+  padding:14px;border-radius:10px;font-weight:800;font-size:16px;margin-top:16px;box-shadow:0 8px 20px rgba(255,138,0,0.35);
+}
+.secure-note{text-align:center;font-size:11px;color:var(--muted-2);margin-top:8px;}
+
+/* ---------- CONSENT SCREEN ---------- */
+.consent-screen{
+  position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;
+  padding:30px;overflow-y:auto;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-2) 100%);
+}
+.consent-screen[hidden]{display:none;}
+.consent-card{
+  background:#fff;border-radius:16px;max-width:660px;width:100%;padding:36px 40px;
+  box-shadow:var(--shadow-lg);max-height:92vh;overflow-y:auto;
+}
+.consent-brand{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:16px;}
+.consent-brand .badge-sm{width:22px;height:22px;border-radius:6px;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.consent-card h2{font-size:21px;margin-bottom:16px;line-height:1.3;}
+.consent-card p{font-size:13.5px;color:var(--ink);line-height:1.65;margin:0 0 12px;}
+.consent-card p b{color:var(--navy);}
+.consent-list{margin:16px 0;padding-left:20px;}
+.consent-list li{font-size:13.5px;color:var(--ink);line-height:1.65;margin-bottom:11px;}
+.consent-list li b{color:var(--navy);}
+.consent-confirm{background:#F5F8FC;border:1px solid var(--line);border-radius:9px;padding:13px 15px;font-size:13px;margin-top:18px;}
+.consent-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px;flex-wrap:wrap;}
+.consent-decline{background:#fff;border:1.5px solid var(--line);color:var(--muted);padding:11px 18px;border-radius:9px;font-weight:600;font-size:13.5px;}
+.consent-agree{
+  background:linear-gradient(120deg,var(--orange),var(--orange-dark));color:#fff;border:none;
+  padding:11px 28px;border-radius:9px;font-weight:800;font-size:14.5px;box-shadow:0 6px 16px rgba(255,138,0,0.35);
+}
+.consent-declined-msg{max-width:460px;text-align:center;color:#fff;font-family:'Baloo 2',sans-serif;font-size:18px;line-height:1.6;}
+
+.continue-btn{
+  background:var(--blue);color:#fff;border:none;padding:12px 22px;border-radius:9px;font-weight:700;font-size:14.5px;margin-top:6px;
+}
+
+/* sidebar */
+.booking-grid.no-sidebar{grid-template-columns:1fr;}
+.fare-sidebar[hidden]{display:none;}
+.fare-sidebar{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;position:sticky;top:18px;}
+.fs-route{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:12px;}
+.fs-route b{font-family:'IBM Plex Mono';font-size:15px;color:var(--navy);}
+.fs-route span{font-size:11px;color:var(--muted);}
+.fs-row{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);padding:5px 0;}
+.fs-row b{color:var(--ink);font-family:'IBM Plex Mono';font-weight:600;}
+.fs-row.addon-row[hidden]{display:none;}
+.fs-total{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:10px;padding-top:12px;font-size:17px;font-weight:800;color:var(--navy);}
+.fs-badges{display:flex;justify-content:space-between;margin-top:16px;font-size:10.5px;color:var(--muted-2);text-align:center;}
+
+/* modal */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(10,20,40,0.55);display:flex;align-items:center;justify-content:center;z-index:100;
+  backdrop-filter:blur(2px);
+}
+.modal-overlay[hidden]{display:none;}
+.modal-card{
+  background:#fff;border-radius:16px;max-width:400px;width:90%;padding:30px 26px 26px;text-align:center;box-shadow:var(--shadow-lg);
+  animation:pop .25s ease;
+}
+@keyframes pop{from{transform:scale(.92);opacity:0;}to{transform:scale(1);opacity:1;}}
+.modal-icon{font-size:44px;margin-bottom:6px;}
+.modal-card h3{font-size:20px;margin-bottom:10px;}
+.modal-card p{font-size:13.5px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+.modal-card button{background:var(--blue);color:#fff;border:none;padding:12px 20px;border-radius:9px;font-weight:700;font-size:14.5px;width:100%;}
+
+footer{text-align:center;padding:24px 24px 8px;font-size:11.5px;color:var(--muted-2);}
+
+/* ---------- RESEARCHER SETUP PANEL (not part of the participant flow) ---------- */
+.setup-toggle-row{text-align:center;padding-bottom:26px;}
+.setup-toggle-row span{font-size:11px;color:var(--muted-2);cursor:pointer;text-decoration:underline dotted;}
+.setup-panel{max-width:760px;margin:0 auto 40px;background:#F7F8FA;border:1.5px dashed #C7D0DE;border-radius:12px;padding:20px 22px;}
+.setup-panel[hidden]{display:none;}
+.setup-panel h4{font-size:14.5px;margin-bottom:6px;}
+.setup-panel p{font-size:12.5px;color:var(--muted);line-height:1.6;margin:0 0 12px;}
+.setup-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.setup-row input[type=text]{flex:1;min-width:240px;padding:9px 11px;border:1.5px solid var(--line);border-radius:8px;font-size:12.5px;font-family:'IBM Plex Mono';}
+.setup-row button{background:var(--blue);color:#fff;border:none;padding:9px 16px;border-radius:8px;font-weight:700;font-size:12.5px;}
+.setup-status{font-size:11.5px;color:var(--success);align-self:center;}
+.setup-panel details{margin-top:14px;border-top:1px solid var(--line);padding-top:12px;}
+.setup-panel summary{font-size:12.5px;font-weight:700;color:var(--blue);cursor:pointer;}
+.setup-panel ol{font-size:12px;color:var(--muted);line-height:1.8;padding-left:20px;margin:10px 0;}
+.setup-panel pre{background:#0F172A;color:#D6E4FF;border-radius:10px;padding:16px;font-size:11.5px;line-height:1.6;overflow-x:auto;margin:10px 0;}
+.setup-panel code{font-family:'IBM Plex Mono';white-space:pre;}
+.copy-script-btn{background:var(--orange);color:#fff;border:none;padding:8px 14px;border-radius:7px;font-weight:700;font-size:12px;}
+
+@media (max-width:980px){
+  .search-grid{grid-template-columns:1fr 1fr;}
+  .booking-grid{grid-template-columns:1fr;}
+  .fare-sidebar{position:static;}
+  .form-grid,.form-grid.g3,.form-grid.g2{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ CONSENT SCREEN (must be accepted before the app is reachable) ============ -->
+<div class="consent-screen" id="consentScreen">
+  <div class="consent-card">
+    <div class="consent-brand"><div class="badge-sm">✈</div><span>Gokhale Airlines — Research Preview</span></div>
+    <h2>Participant Information &amp; Informed Consent</h2>
+    <p><b>Study Title:</b> Digital Consumer Decision-Making in Travel &amp; Ticketing</p>
+    <p><b>Conducted by:</b> Master of Science in Economics, Gokhale Institute of Politics and Economics, Pune</p>
+    <p>Thank you for participating in this academic study. We are investigating consumer preferences, transaction habits, and decision-making during online ticketing and digital payment checkouts.</p>
+    <ul class="consent-list">
+      <li><b>Procedure &amp; Duration:</b> You will be asked a few demographic questions, presented with a short hypothetical booking scenario, and asked to share your perceptions. The survey takes approximately 3–4 minutes.</li>
+      <li><b>Voluntary Participation:</b> Your participation is entirely voluntary. You may choose not to answer specific questions or exit the survey at any time.</li>
+      <li><b>Anonymity &amp; Privacy:</b> Your responses are kept confidential. No identifying information is collected other than the traveller name you enter during the mock booking, which is used solely to classify and organize responses for analysis. No emails, phone numbers, or IP addresses are collected. Data will be analyzed strictly in aggregate form for academic coursework.</li>
+      <li><b>Eligibility:</b> You must be 18 years of age or older to participate.</li>
+    </ul>
+    <p>If you have any questions regarding this research, you may contact the research team at: <a href="mailto:sudeep.pg26219@gipe.ac.in">sudeep.pg26219@gipe.ac.in</a></p>
+    <p class="consent-confirm"><b>Consent Confirmation:</b> By selecting "I Agree" below, you confirm that you are at least 18 years old, have read the information above, and voluntarily consent to participate in this study.</p>
+    <div class="consent-actions">
+      <button type="button" id="consentDeclineBtn" class="consent-decline">I do not wish to participate</button>
+      <button type="button" id="consentAgreeBtn" class="consent-agree">I Agree</button>
+    </div>
+  </div>
+</div>
+
+
+<header class="topnav">
+  <div class="wrap">
+    <div class="brand">
+      <div class="plane-badge">✈</div>
+      <div>GOKHALE AIRLINES<small>book &middot; fly &middot; repeat</small></div>
+    </div>
+    <nav class="navlinks">
+      <span class="active">Flights</span>
+      <span>Hotels</span>
+      <span>Trains</span>
+      <span>Holidays</span>
+    </nav>
+  </div>
+</header>
+<div class="trust-bar">
+  <div class="wrap">
+    <span><b>✓</b> Free Cancellation*</span>
+    <span><b>✓</b> Lowest Fare Guarantee*</span>
+    <span><b>✓</b> 24x7 Customer Support</span>
+    <span><b>✓</b> Instant e-Ticket</span>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- ============ SEARCH PANEL ============ -->
+  <section class="search-section">
+    <div class="search-card">
+      <div class="trip-toggle">
+        <label><input type="radio" name="tripType" value="oneway" checked> One Way</label>
+        <label><input type="radio" name="tripType" value="round"> Round Trip</label>
+      </div>
+      <div class="search-grid">
+        <div class="field-group">
+          <label>From</label>
+          <select id="fromSelect"></select>
+          <div class="swap-btn" id="swapBtn" title="Swap origin and destination">⇄</div>
+        </div>
+        <div class="field-group">
+          <label>To</label>
+          <select id="toSelect"></select>
+        </div>
+        <div class="field-group">
+          <label>Departure</label>
+          <input type="date" id="departDate">
+        </div>
+        <div class="field-group return-field disabled" id="returnFieldGroup">
+          <label>Return</label>
+          <input type="date" id="returnDate" disabled>
+        </div>
+        <div class="field-group" style="grid-column:1;">
+          <label>Travellers &amp; Class</label>
+          <button type="button" class="travelers-btn" id="travelersBtn">1 Traveller, Economy</button>
+          <div class="travelers-pop" id="travelersPop" hidden>
+            <div class="tp-row"><span>Adults<small>12 yrs +</small></span>
+              <div class="stepper-count"><button type="button" data-count="adults" data-dir="-1">−</button><span id="adultsVal">1</span><button type="button" data-count="adults" data-dir="1">+</button></div>
+            </div>
+            <div class="tp-row"><span>Children<small>2–11 yrs</small></span>
+              <div class="stepper-count"><button type="button" data-count="children" data-dir="-1">−</button><span id="childrenVal">0</span><button type="button" data-count="children" data-dir="1">+</button></div>
+            </div>
+            <div class="tp-row"><span>Infants<small>Under 2 yrs</small></span>
+              <div class="stepper-count"><button type="button" data-count="infants" data-dir="-1">−</button><span id="infantsVal">0</span><button type="button" data-count="infants" data-dir="1">+</button></div>
+            </div>
+            <div class="tp-class">
+              <label><input type="radio" name="cls" value="Economy" checked><span>Economy</span></label>
+              <label><input type="radio" name="cls" value="Premium Economy"><span>Premium Economy</span></label>
+              <label><input type="radio" name="cls" value="Business"><span>Business</span></label>
+              <label><input type="radio" name="cls" value="First"><span>First</span></label>
+            </div>
+            <button type="button" class="tp-apply" id="travelersApply">Apply</button>
+          </div>
+        </div>
+        <div class="field-group" style="align-self:end;">
+          <button type="button" class="search-btn" id="searchBtn">🔍 Search Flights</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section class="results-section" id="resultsSection" hidden>
+    <div class="section-eyebrow" id="resultsEyebrow">Flights found</div>
+    <div id="resultsList"></div>
+  </section>
+
+  <!-- ============ BOOKING SECTION ============ -->
+  <section class="booking-section" id="bookingSection" hidden>
+
+    <div class="stepper">
+      <div class="stepper-track">
+        <div class="stepper-line"><div class="stepper-progress" id="stepperProgress"></div></div>
+        <div class="plane-marker" id="planeMarker">✈</div>
+        <div class="step-node active" data-node="1"><div class="node-dot">1</div><div class="node-label">Review Flight</div></div>
+        <div class="step-node" data-node="2"><div class="node-dot">2</div><div class="node-label">Traveller Details</div></div>
+        <div class="step-node" data-node="3"><div class="node-dot">3</div><div class="node-label">Payment</div></div>
+      </div>
+    </div>
+
+    <div class="booking-grid" id="bookingApp">
+      <main>
+
+        <!-- STEP 1 -->
+        <div class="step-panel" id="step1Panel">
+          <h3>Review your flight</h3>
+          <p class="step-sub">Please confirm the flight details before proceeding.</p>
+          <div class="boarding-pass">
+            <div class="bp-city"><b id="bpFrom">DEL</b><span id="bpFromName">Indira Gandhi Intl</span></div>
+            <div class="bp-mid">
+              <div class="flightno" id="bpFlightNo">GOKHALE AIRLINES · GA-000</div>
+              <div class="dashline"></div>
+              <div class="bp-meta" style="justify-content:center;">
+                <div><b id="bpDate">—</b>Date</div>
+                <div><b id="bpClass">Economy</b>Class</div>
+                <div><b id="bpPax">1 Traveller</b>Passengers</div>
+              </div>
+            </div>
+            <div class="bp-city"><b id="bpTo">BOM</b><span id="bpToName">Chhatrapati Shivaji Intl</span></div>
+          </div>
+          <div class="fare-breakup" id="fareBreakupStep1">
+            <div class="fb-row"><span>Base Fare</span><b id="fb1Base">₹0</b></div>
+            <div class="fb-row"><span>Taxes &amp; Surcharges</span><b id="fb1Tax">₹0</b></div>
+            <div class="fb-total"><span>Total</span><span id="fb1Total">₹0</span></div>
+          </div>
+          <button type="button" class="continue-btn" id="toStep2Btn">Continue to Traveller Details →</button>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-panel" id="step2Panel" hidden>
+          <h3>Traveller details</h3>
+          <p class="step-sub">Enter details exactly as they appear on a government photo ID.</p>
+          <div id="travelerContainer"></div>
+
+          <div class="contact-block">
+            <h4 style="font-size:14px;margin-bottom:10px;">Contact details <span style="font-weight:400;color:var(--muted);font-size:11.5px;">(for booking confirmation &amp; e-ticket)</span></h4>
+            <div class="form-grid g2">
+              <div class="ff"><label>Email Address</label><input type="email" id="contactEmail" placeholder="you@example.com" required></div>
+              <div class="ff"><label>Mobile Number</label><input type="tel" id="contactPhone" placeholder="10-digit mobile number" pattern="[0-9]{10}" maxlength="10" required disabled></div>
+            </div>
+            <span class="gst-toggle" id="gstToggle">+ Add GST details for business travel (optional)</span>
+            <div class="gst-fields" id="gstFields" hidden>
+              <div class="form-grid g2">
+                <div class="ff"><label>Company Name</label><input type="text" id="gstCompany"></div>
+                <div class="ff"><label>GSTIN</label><input type="text" id="gstNumber" maxlength="15" placeholder="15-digit GSTIN"></div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="continue-btn" id="toStep3Btn">Continue to Payment →</button>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-panel" id="step3Panel" hidden>
+          <h3>Payment</h3>
+          <p class="step-sub">Almost done — complete your payment to confirm this booking.</p>
+
+          <div class="urgency-timer">⏱ Complete your payment in <span class="clock" id="urgencyClock">10:00</span> to keep this fare locked</div>
+
+          <div class="insurance-fineprint">
+            <input type="checkbox" id="insuranceCheckbox">
+            <label for="insuranceCheckbox">Add ₹19 transit insurance to your booking. Covers eligible travel-delay and baggage-transit disruptions as per policy wording. You can remove this at any time before payment. See Terms.</label>
+          </div>
+
+          <div class="pay-form">
+            <h4 style="font-size:14px;margin-bottom:10px;">Payment details <span style="font-weight:400;color:var(--muted);font-size:11.5px;">(simulation only — no real card is charged)</span></h4>
+            <div class="form-grid g2">
+              <div class="ff"><label>Name on Card</label><input type="text" id="cardName" placeholder="As printed on card" required></div>
+              <div class="ff"><label>Card Number</label><input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" required disabled></div>
+              <div class="ff"><label>Expiry (MM/YY)</label><input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" required disabled></div>
+              <div class="ff"><label>CVV</label><input type="password" id="cardCvv" placeholder="•••" maxlength="3" required disabled></div>
+            </div>
+            <button type="button" class="make-payment-btn" id="makePaymentBtn">Make Payment — <span id="payBtnAmount">₹0</span></button>
+            <div class="secure-note">🔒 This is a research simulation. No real payment will be processed.</div>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- SIDEBAR -->
+      <aside class="fare-sidebar" id="fareSidebar" hidden>
+        <div class="fs-route"><b id="sbRoute">DEL → BOM</b><span id="sbDate">—</span></div>
+        <div class="fs-row"><span>Base Fare</span><b id="sbBase">₹0</b></div>
+        <div class="fs-row"><span>Taxes &amp; Surcharges</span><b id="sbTax">₹0</b></div>
+        <div class="fs-row addon-row" id="sbInsuranceRow"><span>Transit Insurance</span><b id="sbInsurance">₹19</b></div>
+        <div class="fs-total"><span>Total</span><span id="sbTotal">₹0</span></div>
+        <div class="fs-badges"><span>🔒 Secure Checkout</span><span>✓ Best Fare</span><span>24x7 Support</span></div>
+      </aside>
+    </div>
+  </section>
+
+</main>
+
+<footer>Gokhale Airlines is a simulated booking environment created for academic research purposes only. No real flights, payments, or insurance products are involved.</footer>
+
+<div class="setup-toggle-row"><span id="setupToggle">⚙ Researcher setup — Google Sheets integration</span></div>
+<div class="setup-panel" id="setupPanel" hidden>
+  <h4>Send simulation data to a Google Sheet</h4>
+  <p style="background:#FFF4E8;border:1px solid #FFD9A8;border-radius:8px;padding:10px 12px;color:var(--orange-dark);font-size:12px;">
+    <b>"My sheet only gets responses from my own laptop"?</b> That means the URL was only ever saved via the
+    box below, which stores it in <i>that one browser's</i> local storage — it never reaches anyone else's
+    device. To make it work for every participant, you must paste the URL into the
+    <code>SHEET_WEBAPP_URL</code> constant near the top of the &lt;script&gt; in the HTML file itself
+    (see step 7 below), then commit and push that change to GitHub so the published page already contains
+    it for every visitor. The box below is only useful for testing on your own machine before you publish.
+  </p>
+  <p>Paste your deployed Apps Script Web App URL below to test locally. Once saved, every completed "Make Payment" click <i>in this browser</i> will also send that session's data to your sheet (in addition to the local browser log). Leave this blank to keep logging locally only.</p>
+  <div class="setup-row">
+    <input type="text" id="sheetUrlInput" placeholder="https://script.google.com/macros/s/XXXXXXXX/exec">
+    <button type="button" id="saveSheetUrlBtn">Save (this browser only)</button>
+    <span class="setup-status" id="sheetUrlStatus"></span>
+  </div>
+  <details>
+    <summary>View Apps Script code &amp; setup steps</summary>
+    <ol>
+      <li>Open or create the Google Sheet you want this data logged to.</li>
+      <li>Go to <b>Extensions → Apps Script</b>.</li>
+      <li>Delete any starter code in the editor and paste in the script below.</li>
+      <li>Click <b>Deploy → New deployment</b>, choose type <b>Web app</b>.</li>
+      <li>Set "Execute as" to <b>Me</b> and "Who has access" to <b>Anyone</b>, then click <b>Deploy</b> and authorize the permissions Google asks for.</li>
+      <li>Copy the Web App URL it gives you (it ends in <code>/exec</code>).</li>
+      <li><b>Required for real participants:</b> open the HTML file's source code, find the line
+        <code>const SHEET_WEBAPP_URL = "";</code> near the top of the &lt;script&gt; tag, paste your URL between
+        the quotes, save the file, and push/commit it to the GitHub repo you're hosting from. Every visitor to the
+        published page will now automatically log to your sheet — no per-browser setup needed.</li>
+      <li>A "Responses" tab will be created automatically in your sheet the first time data arrives.</li>
+    </ol>
+    <p style="background:#FFF4E8;border:1px solid #FFD9A8;border-radius:8px;padding:10px 12px;color:var(--orange-dark);font-size:12px;">
+      <b>Already deployed an earlier version of this script?</b> The code below now includes a "Traveller Name(s)"
+      column, pulled from the First/Last Name fields travellers fill in during the Traveller Details step (multiple
+      travellers are joined with a semicolon). Paste the updated code over your existing script in the Apps Script
+      editor, save it, then go to <b>Deploy → Manage deployments</b>, click the pencil (edit) icon on your existing
+      deployment, set <b>Version</b> to <b>New version</b>, and click <b>Deploy</b>. This pushes the updated code
+      live on the same Web App URL — you don't need to reconnect the page. If your "Responses" tab already exists
+      with older headers, either delete that tab (a fresh one with the new headers will be created automatically on
+      the next submission) or manually update row 1 yourself.
+    </p>
+    <pre><code id="appsScriptCodeBlock"></code></pre>
+    <button type="button" class="copy-script-btn" id="copyScriptBtn">Copy code</button>
+  </details>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="paymentModal" hidden>
+  <div class="modal-card">
+    <div class="modal-icon">🛫</div>
+    <h3>Booking Confirmed!</h3>
+    <p>This was a simulated payment for research purposes — no real transaction has been processed. Next, you'll be redirected to a short questionnaire about your booking experience.</p>
+    <button type="button" id="modalOkBtn">OK, take me to the survey</button>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   CONFIG
+   ========================================================= */
+// TODO (researcher): replace with the real post-simulation Google Form link once ready.
+const POST_SIMULATION_FORM_URL = "https://forms.gle/REPLACE-WITH-ACTUAL-FORM-LINK";
+
+// TODO (researcher): paste your deployed Apps Script Web App URL here (ends in /exec) BEFORE
+// publishing this file to GitHub Pages. This is what makes every participant's browser send
+// data to your sheet — pasting the URL into the on-page "Researcher setup" panel instead only
+// saves it in that one browser's local storage and will NOT work for other participants.
+const SHEET_WEBAPP_URL = "";
+
+// Apps Script source for the companion Google Sheet Web App (displayed + copyable in the
+// "Researcher setup" panel below the footer — this string is never executed by this page).
+const APPS_SCRIPT_CODE = `function doPost(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName('Responses');
+  if (!sheet) {
+    sheet = ss.insertSheet('Responses');
+    sheet.appendRow([
+      'Timestamp', 'Traveller Name(s)', 'Route', 'Travel Class', 'Adults', 'Children', 'Infants',
+      'Default Insurance Setting', 'Insurance Opted In (Final)', 'Insurance Toggle Count',
+      'Deliberation Time Before Payment (ms)', 'Total Session Time (ms)',
+      'Total Field Interactions', 'Fare Total (INR)', 'Insurance Toggle Log (JSON)'
+    ]);
+  }
+
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([
+    data.timestamp,
+    data.travellerNames,
+    data.route,
+    data.travelClass,
+    data.passengers.adults,
+    data.passengers.children,
+    data.passengers.infants,
+    data.defaultInsuranceSetting,
+    data.insuranceOptedInFinal,
+    data.insuranceToggleCount,
+    data.deliberationMsBeforePayment,
+    data.totalSessionMs,
+    data.totalFieldInteractions,
+    data.fareTotal,
+    JSON.stringify(data.insuranceToggleLog)
+  ]);
+
+  return ContentService.createTextOutput(JSON.stringify({ status: 'ok' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doGet(e) {
+  return ContentService.createTextOutput(JSON.stringify({ status: 'Gokhale Airlines research endpoint is live' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}`;
+
+// Default state of the transit-insurance add-on for this session.
+// true  = opted-in by default (participant must actively uncheck to opt out)
+// false = opted-out by default (participant must actively check to opt in)
+const DEFAULT_INSURANCE_OPTED_IN = false;
+
+const AIRPORTS = [
+  {code:'DEL', city:'Delhi', name:'Indira Gandhi Intl', group:'Major International'},
+  {code:'BOM', city:'Mumbai', name:'Chhatrapati Shivaji Maharaj Intl', group:'Major International'},
+  {code:'BLR', city:'Bengaluru', name:'Kempegowda Intl', group:'Major International'},
+  {code:'MAA', city:'Chennai', name:'Chennai Intl', group:'Major International'},
+  {code:'CCU', city:'Kolkata', name:'Netaji Subhas Chandra Bose Intl', group:'Major International'},
+  {code:'HYD', city:'Hyderabad', name:'Rajiv Gandhi Intl', group:'Major International'},
+  {code:'COK', city:'Kochi', name:'Cochin Intl', group:'Major International'},
+  {code:'AMD', city:'Ahmedabad', name:'Sardar Vallabhbhai Patel Intl', group:'Major International'},
+  {code:'GOI', city:'Goa', name:'Goa Intl (Dabolim)', group:'Major International'},
+  {code:'PNQ', city:'Pune', name:'Pune Airport', group:'Regional'},
+  {code:'JAI', city:'Jaipur', name:'Jaipur Intl', group:'Regional'},
+  {code:'LKO', city:'Lucknow', name:'Chaudhary Charan Singh Intl', group:'Regional'},
+  {code:'GAU', city:'Guwahati', name:'Lokpriya Gopinath Bordoloi Intl', group:'Regional'},
+  {code:'TRV', city:'Thiruvananthapuram', name:'Trivandrum Intl', group:'Regional'},
+  {code:'CJB', city:'Coimbatore', name:'Coimbatore Intl', group:'Regional'},
+  {code:'TRZ', city:'Tiruchirappalli (Trichy)', name:'Tiruchirappalli Intl', group:'Regional'},
+  {code:'RDP', city:'Durgapur', name:'Kazi Nazrul Islam Airport', group:'Regional'},
+  {code:'NAG', city:'Nagpur', name:'Dr. Babasaheb Ambedkar Intl', group:'Regional'},
+  {code:'VNS', city:'Varanasi', name:'Lal Bahadur Shastri Intl', group:'Regional'},
+  {code:'BBI', city:'Bhubaneswar', name:'Biju Patnaik Intl', group:'Regional'},
+  {code:'IXC', city:'Chandigarh', name:'Chandigarh Intl', group:'Regional'},
+  {code:'IDR', city:'Indore', name:'Devi Ahilya Bai Holkar Intl', group:'Regional'},
+  {code:'PAT', city:'Patna', name:'Jay Prakash Narayan Intl', group:'Regional'},
+  {code:'ATQ', city:'Amritsar', name:'Sri Guru Ram Dass Jee Intl', group:'Regional'},
+  {code:'VTZ', city:'Visakhapatnam', name:'Visakhapatnam Airport', group:'Regional'}
+];
+
+// Multiple flight options shown between the two chosen airports.
+const FLIGHT_OPTIONS = [
+  {dep:'06:05', arr:'08:15', dur:'2h 10m', mult:0.94, tag:'Early Morning'},
+  {dep:'09:15', arr:'11:25', dur:'2h 10m', mult:1.00, tag:'Morning'},
+  {dep:'14:40', arr:'16:55', dur:'2h 15m', mult:1.05, tag:'Afternoon'},
+  {dep:'19:20', arr:'21:35', dur:'2h 15m', mult:1.15, tag:'Evening'}
+];
+let selectedFlight = null;
+let selectedFlightNo = '';
+
+/* =========================================================
+   FIELD SEQUENCING
+   Disables a field until the field before it in the given order
+   has been filled in, so travellers must complete details in order.
+   ========================================================= */
+function chainEnable(fields){
+  function refresh(){
+    for(let i=0;i<fields.length-1;i++){
+      const filled = fields[i].isFilled();
+      const nextEls = Array.isArray(fields[i+1].el) ? fields[i+1].el : [fields[i+1].el];
+      nextEls.forEach(e=> e.disabled = !filled);
+      if(!filled) break;
+    }
+  }
+  fields.forEach(f=>{
+    const els = Array.isArray(f.el) ? f.el : [f.el];
+    els.forEach(e=>{
+      e.addEventListener('input', refresh);
+      e.addEventListener('change', refresh);
+    });
+  });
+  refresh();
+}
+
+/* =========================================================
+   SEARCH STATE
+   ========================================================= */
+const state = { adults:1, children:0, infants:0, cls:'Economy', tripType:'oneway' };
+
+function populateAirportSelect(sel, defaultCode){
+  const groups = {};
+  AIRPORTS.forEach(a=>{ (groups[a.group] = groups[a.group]||[]).push(a); });
+  Object.keys(groups).forEach(g=>{
+    const og = document.createElement('optgroup'); og.label = g;
+    groups[g].forEach(a=>{
+      const opt = document.createElement('option');
+      opt.value = a.code; opt.textContent = `${a.city} (${a.code})`;
+      if(a.code === defaultCode) opt.selected = true;
+      og.appendChild(opt);
+    });
+    sel.appendChild(og);
+  });
+}
+const fromSelect = document.getElementById('fromSelect');
+const toSelect = document.getElementById('toSelect');
+populateAirportSelect(fromSelect,'DEL');
+populateAirportSelect(toSelect,'BOM');
+
+function airportInfo(code){ return AIRPORTS.find(a=>a.code===code); }
+
+document.getElementById('swapBtn').addEventListener('click', ()=>{
+  const a = fromSelect.value; fromSelect.value = toSelect.value; toSelect.value = a;
+});
+
+const todayStr = new Date().toISOString().split('T')[0];
+const departDate = document.getElementById('departDate');
+const returnDate = document.getElementById('returnDate');
+departDate.min = todayStr; departDate.value = todayStr;
+returnDate.min = todayStr;
+
+document.querySelectorAll('input[name=tripType]').forEach(r=>{
+  r.addEventListener('change', e=>{
+    state.tripType = e.target.value;
+    const grp = document.getElementById('returnFieldGroup');
+    if(e.target.value === 'round'){ grp.classList.remove('disabled'); returnDate.disabled=false; }
+    else { grp.classList.add('disabled'); returnDate.disabled=true; returnDate.value=''; }
+  });
+});
+
+/* Travellers popover */
+const travelersBtn = document.getElementById('travelersBtn');
+const travelersPop = document.getElementById('travelersPop');
+travelersBtn.addEventListener('click', ()=> travelersPop.hidden = !travelersPop.hidden);
+document.addEventListener('click', e=>{
+  if(!travelersPop.contains(e.target) && e.target!==travelersBtn && !travelersPop.hidden){ travelersPop.hidden = true; }
+});
+document.querySelectorAll('.stepper-count button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const key = btn.dataset.count, dir = parseInt(btn.dataset.dir,10);
+    const min = key==='adults' ? 1 : 0;
+    const max = 9;
+    state[key] = Math.min(max, Math.max(min, state[key] + dir));
+    document.getElementById(key+'Val').textContent = state[key];
+  });
+});
+document.querySelectorAll('input[name=cls]').forEach(r=> r.addEventListener('change', e=> state.cls = e.target.value));
+document.getElementById('travelersApply').addEventListener('click', ()=>{
+  const total = state.adults + state.children + state.infants;
+  travelersBtn.textContent = `${total} Traveller${total>1?'s':''}, ${state.cls}`;
+  travelersPop.hidden = true;
+});
+
+/* =========================================================
+   FARE
+   ========================================================= */
+const CLASS_MULT = {Economy:1, 'Premium Economy':1.5, Business:2.6, First:3.6};
+const BASE_FARE_PER_PAX = 4499;
+const TAX_PER_PAX = 1065;
+const INFANT_FARE = 1650;
+const ADDON = { insurance:19 };
+
+function computeFareForMult(flightMult){
+  const mult = CLASS_MULT[state.cls] || 1;
+  const payingPax = state.adults + state.children;
+  const base = Math.round(BASE_FARE_PER_PAX * mult * flightMult) * payingPax;
+  const tax = Math.round(TAX_PER_PAX * mult * flightMult) * payingPax + (state.infants * Math.round(INFANT_FARE*0.3));
+  const infantFare = state.infants * INFANT_FARE;
+  return { base: base + infantFare, tax };
+}
+function computeBaseTotals(){
+  return computeFareForMult(selectedFlight ? selectedFlight.mult : 1);
+}
+
+function fmt(n){ return '₹' + n.toLocaleString('en-IN'); }
+
+function calcAndRenderFare(){
+  const {base, tax} = computeBaseTotals();
+  let total = base + tax;
+  const insuranceOn = document.getElementById('insuranceCheckbox').checked;
+  if(insuranceOn) total += ADDON.insurance;
+
+  document.getElementById('sbBase').textContent = fmt(base);
+  document.getElementById('sbTax').textContent = fmt(tax);
+  document.getElementById('sbInsuranceRow').hidden = !insuranceOn;
+  document.getElementById('sbTotal').textContent = fmt(total);
+
+  document.getElementById('fb1Base').textContent = fmt(base);
+  document.getElementById('fb1Tax').textContent = fmt(tax);
+  document.getElementById('fb1Total').textContent = fmt(base+tax);
+
+  document.getElementById('payBtnAmount').textContent = fmt(total);
+  return total;
+}
+
+/* =========================================================
+   SEARCH -> RESULTS (multiple flights shown per route)
+   ========================================================= */
+function renderFlightResults(){
+  const list = document.getElementById('resultsList');
+  list.innerHTML = '';
+  const totalPax = state.adults + state.children + state.infants;
+  FLIGHT_OPTIONS.forEach((f, idx)=>{
+    const {base, tax} = computeFareForMult(f.mult);
+    const perPax = Math.round((base+tax) / Math.max(1,(state.adults+state.children)));
+    const fno = 'GA-' + (201 + idx*37 + Math.floor(Math.random()*11));
+    const card = document.createElement('div');
+    card.className = 'flight-card';
+    card.innerHTML = `
+      <div class="fc-airline">
+        <div class="logo">GA</div>
+        <div><b>GOKHALE AIRLINES</b><span>${fno}</span></div>
+      </div>
+      <div class="fc-route">
+        <div class="fc-time"><b>${f.dep}</b><span>${fromSelect.value}</span></div>
+        <div class="fc-path"><span class="dur">${f.dur}</span><div class="dots"></div><span>Non-stop</span></div>
+        <div class="fc-time"><b>${f.arr}</b><span>${toSelect.value}</span></div>
+      </div>
+      <div class="fc-fare">
+        <div class="price">${fmt(perPax)}</div>
+        <span>for ${totalPax} traveller${totalPax>1?'s':''}, incl. taxes</span><br>
+        <button type="button" class="select-btn" data-idx="${idx}" data-fno="${fno}">Select &amp; Continue</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+  list.querySelectorAll('.select-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      selectedFlight = FLIGHT_OPTIONS[parseInt(btn.dataset.idx,10)];
+      selectedFlightNo = btn.dataset.fno;
+      proceedToBooking();
+    });
+  });
+}
+
+document.getElementById('searchBtn').addEventListener('click', ()=>{
+  if(fromSelect.value === toSelect.value){
+    alert('Origin and destination cannot be the same. Please choose different airports.');
+    return;
+  }
+  renderFlightResults();
+  document.getElementById('resultsEyebrow').textContent = `${FLIGHT_OPTIONS.length} flights found for ${airportInfo(fromSelect.value).city} → ${airportInfo(toSelect.value).city}`;
+  document.getElementById('resultsSection').hidden = false;
+  document.getElementById('resultsSection').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+function proceedToBooking(){
+  buildTravelerForms();
+  fillReviewStep();
+  document.getElementById('bookingSection').hidden = false;
+  document.getElementById('resultsSection').hidden = true;
+  goToStep(1);
+  calcAndRenderFare();
+  document.getElementById('bookingSection').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function fillReviewStep(){
+  const from = airportInfo(fromSelect.value), to = airportInfo(toSelect.value);
+  document.getElementById('bpFrom').textContent = from.code;
+  document.getElementById('bpFromName').textContent = from.name;
+  document.getElementById('bpTo').textContent = to.code;
+  document.getElementById('bpToName').textContent = to.name;
+  document.getElementById('bpFlightNo').textContent = 'GOKHALE AIRLINES · ' + selectedFlightNo;
+  const dateShown = new Date(departDate.value).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
+  document.getElementById('bpDate').textContent = dateShown;
+  document.getElementById('bpClass').textContent = state.cls;
+  const totalPax = state.adults + state.children + state.infants;
+  document.getElementById('bpPax').textContent = `${totalPax} Traveller${totalPax>1?'s':''}`;
+  document.getElementById('sbRoute').textContent = `${from.code} → ${to.code}`;
+  document.getElementById('sbDate').textContent = dateShown;
+}
+
+/* =========================================================
+   TRAVELER FORMS
+   ========================================================= */
+const TITLES = { adult:['Mr','Mrs','Ms','Dr'], child:['Mstr','Miss'] };
+function buildTravelerForms(){
+  const container = document.getElementById('travelerContainer');
+  container.innerHTML = '';
+  const totalForms = state.adults + state.children;
+  for(let i=0;i<totalForms;i++){
+    const isAdult = i < state.adults;
+    const label = isAdult ? `Adult ${i+1}` : `Child ${i - state.adults + 1}`;
+    const titles = isAdult ? TITLES.adult : TITLES.child;
+    const card = document.createElement('div');
+    card.className = 'traveler-card';
+    card.innerHTML = `
+      <h4>${label} <span class="badge">${isAdult ? 'Adult · 12+ yrs' : 'Child · 2–11 yrs'}</span></h4>
+      <div class="form-grid">
+        <div class="ff"><label>Title</label><select name="title">${titles.map(t=>`<option>${t}</option>`).join('')}</select></div>
+        <div class="ff"><label>First Name</label><input type="text" name="first" placeholder="First name" required></div>
+        <div class="ff"><label>Last Name</label><input type="text" name="last" placeholder="Last name" required disabled></div>
+        <div class="ff"><label>Nationality</label>
+          <select name="nationality">
+            <option selected>Indian</option><option>American</option><option>British</option><option>Canadian</option><option>Australian</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid g2" style="margin-top:12px;">
+        <div class="ff">
+          <label>Gender</label>
+          <div class="gender-row">
+            <label><input type="radio" name="gender-${i}" value="Female" required disabled> Female</label>
+            <label><input type="radio" name="gender-${i}" value="Male" required disabled> Male</label>
+            <label><input type="radio" name="gender-${i}" value="Other" required disabled> Other</label>
+          </div>
+        </div>
+        <div class="ff">
+          <label>Age</label>
+          <input type="number" name="age" min="1" max="120" placeholder="Age in years" required disabled>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+
+    const firstInput = card.querySelector('input[name="first"]');
+    const lastInput = card.querySelector('input[name="last"]');
+    const genderRadios = Array.from(card.querySelectorAll(`input[name="gender-${i}"]`));
+    const ageInput = card.querySelector('input[name="age"]');
+    chainEnable([
+      { el: firstInput, isFilled: ()=> firstInput.value.trim() !== '' },
+      { el: lastInput, isFilled: ()=> lastInput.value.trim() !== '' },
+      { el: genderRadios, isFilled: ()=> genderRadios.some(r=>r.checked) },
+      { el: ageInput, isFilled: ()=> ageInput.value.trim() !== '' }
+    ]);
+  }
+}
+
+document.getElementById('gstToggle').addEventListener('click', ()=>{
+  const f = document.getElementById('gstFields');
+  f.hidden = !f.hidden;
+});
+
+/* Contact fields must be filled in order: email, then phone */
+const contactEmailEl = document.getElementById('contactEmail');
+const contactPhoneEl = document.getElementById('contactPhone');
+chainEnable([
+  { el: contactEmailEl, isFilled: ()=> contactEmailEl.value.trim() !== '' && contactEmailEl.checkValidity() },
+  { el: contactPhoneEl, isFilled: ()=> contactPhoneEl.value.trim() !== '' }
+]);
+
+/* Payment fields must be filled in order: name, number, expiry, CVV */
+const cardNameEl = document.getElementById('cardName');
+const cardNumberEl = document.getElementById('cardNumber');
+const cardExpiryEl = document.getElementById('cardExpiry');
+const cardCvvEl = document.getElementById('cardCvv');
+chainEnable([
+  { el: cardNameEl, isFilled: ()=> cardNameEl.value.trim() !== '' },
+  { el: cardNumberEl, isFilled: ()=> cardNumberEl.value.trim().length >= 12 },
+  { el: cardExpiryEl, isFilled: ()=> cardExpiryEl.value.trim() !== '' },
+  { el: cardCvvEl, isFilled: ()=> cardCvvEl.value.trim() !== '' }
+]);
+
+/* =========================================================
+   STEPPER NAVIGATION
+   ========================================================= */
+let currentStep = 1;
+function goToStep(n){
+  currentStep = n;
+  [1,2,3].forEach(i=>{
+    document.getElementById('step'+i+'Panel').hidden = (i!==n);
+    const node = document.querySelector(`.step-node[data-node="${i}"]`);
+    node.classList.remove('active','done');
+    if(i < n) node.classList.add('done');
+    if(i === n) node.classList.add('active');
+  });
+  const sidebar = document.getElementById('fareSidebar');
+  const grid = document.getElementById('bookingApp');
+  if(n === 3){ sidebar.hidden = false; grid.classList.remove('no-sidebar'); }
+  else { sidebar.hidden = true; grid.classList.add('no-sidebar'); }
+  const pct = (n-1) * 50;
+  document.getElementById('stepperProgress').style.width = pct + '%';
+  document.getElementById('planeMarker').style.left = `calc(6% + ${pct}% * 0.88)`;
+}
+document.getElementById('toStep2Btn').addEventListener('click', ()=> { goToStep(2); document.getElementById('bookingSection').scrollIntoView({behavior:'smooth', block:'start'}); });
+document.getElementById('toStep3Btn').addEventListener('click', ()=>{
+  const email = document.getElementById('contactEmail');
+  const phone = document.getElementById('contactPhone');
+  const requiredFields = document.querySelectorAll('#step2Panel input[required]');
+  let valid = true;
+  requiredFields.forEach(f=>{ if(!f.checkValidity()) valid = false; });
+  const genderGroups = new Set();
+  document.querySelectorAll('#travelerContainer input[type=radio][name^="gender-"]').forEach(r=>genderGroups.add(r.name));
+  genderGroups.forEach(name=>{
+    if(!document.querySelector(`input[name="${name}"]:checked`)) valid = false;
+  });
+  if(!email.checkValidity() || !phone.checkValidity()) valid = false;
+  if(!valid){ alert('Please complete all required traveller and contact fields before continuing.'); return; }
+  goToStep(3);
+  document.getElementById('bookingSection').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+/* =========================================================
+   ADD-ON / INSURANCE DEFAULT + FARE LIVE UPDATE
+   ========================================================= */
+const insuranceCheckbox = document.getElementById('insuranceCheckbox');
+insuranceCheckbox.checked = DEFAULT_INSURANCE_OPTED_IN;
+insuranceCheckbox.addEventListener('change', calcAndRenderFare);
+
+/* =========================================================
+   URGENCY COUNTDOWN (cosmetic authenticity timer)
+   ========================================================= */
+let urgencySeconds = 600;
+const urgencyClock = document.getElementById('urgencyClock');
+setInterval(()=>{
+  if(urgencySeconds <= 0) return;
+  urgencySeconds--;
+  const m = String(Math.floor(urgencySeconds/60)).padStart(2,'0');
+  const s = String(urgencySeconds%60).padStart(2,'0');
+  urgencyClock.textContent = `${m}:${s}`;
+  if(urgencySeconds === 0){ urgencyClock.textContent = 'Fare may change'; }
+}, 1000);
+
+/* =========================================================
+   RESEARCH INSTRUMENT (silent — not shown to participant)
+   Measures elapsed time between the participant's last form-field
+   interaction and the "Make Payment" click, plus insurance
+   opt-in/opt-out toggle behaviour, to study default-option effects.
+   ========================================================= */
+const researchLog = { sessionStart: Date.now(), events: [], insuranceToggles: [] };
+let lastInteractionAt = researchLog.sessionStart;
+
+const bookingApp = document.getElementById('bookingApp');
+function markInteraction(e){
+  lastInteractionAt = Date.now();
+  const targetId = e.target.id || e.target.name || e.target.tagName;
+  researchLog.events.push({ type:e.type, target: targetId, t: lastInteractionAt });
+  if(e.target.id === 'insuranceCheckbox'){
+    researchLog.insuranceToggles.push({ checked: e.target.checked, t: lastInteractionAt });
+  }
+}
+bookingApp.addEventListener('input', markInteraction, true);
+bookingApp.addEventListener('change', markInteraction, true);
+
+function buildSessionSummary(finalTotal){
+  const now = Date.now();
+  const travellerNames = Array.from(document.querySelectorAll('#travelerContainer .traveler-card')).map(card=>{
+    const first = card.querySelector('input[name="first"]').value.trim();
+    const last = card.querySelector('input[name="last"]').value.trim();
+    return `${first} ${last}`.trim();
+  }).filter(Boolean).join('; ');
+  return {
+    timestamp: new Date().toISOString(),
+    travellerNames: travellerNames,
+    route: `${fromSelect.value}-${toSelect.value}`,
+    travelClass: state.cls,
+    passengers: { adults: state.adults, children: state.children, infants: state.infants },
+    defaultInsuranceSetting: DEFAULT_INSURANCE_OPTED_IN,
+    insuranceOptedInFinal: document.getElementById('insuranceCheckbox').checked,
+    insuranceToggleCount: researchLog.insuranceToggles.length,
+    insuranceToggleLog: researchLog.insuranceToggles,
+    deliberationMsBeforePayment: now - lastInteractionAt,
+    totalSessionMs: now - researchLog.sessionStart,
+    totalFieldInteractions: researchLog.events.length,
+    fareTotal: finalTotal
+  };
+}
+
+function saveSessionSummary(summary){
+  try{
+    const key = 'gokaleResearchSessions';
+    const existing = JSON.parse(localStorage.getItem(key) || '[]');
+    existing.push(summary);
+    localStorage.setItem(key, JSON.stringify(existing));
+  }catch(err){ /* localStorage unavailable — silently skip */ }
+  console.log('%c[Gokale Research Log]', 'color:#FF8A00;font-weight:bold;', summary);
+}
+// Researcher convenience: call window.exportGokaleData() in devtools to retrieve all logged sessions.
+window.exportGokaleData = function(){
+  const data = localStorage.getItem('gokaleResearchSessions') || '[]';
+  console.log(data);
+  return JSON.parse(data);
+};
+
+/* =========================================================
+   GOOGLE SHEET WEB APP INTEGRATION (researcher setup panel)
+   ========================================================= */
+function getSheetWebAppUrl(){
+  try{
+    const saved = localStorage.getItem('gokaleSheetWebAppUrl');
+    if(saved) return saved;
+  }catch(err){ /* local storage unavailable — fall through to hardcoded default */ }
+  return SHEET_WEBAPP_URL;
+}
+function sendToGoogleSheet(summary){
+  const url = getSheetWebAppUrl();
+  if(!url) return; // not configured — session already saved locally, nothing more to do
+  fetch(url, {
+    method: 'POST',
+    mode: 'no-cors', // Apps Script web apps don't return CORS headers; no-cors lets the write go through
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids a CORS preflight request
+    body: JSON.stringify(summary)
+  }).catch(err=>{ console.warn('Could not reach the Google Sheet Web App URL:', err); });
+}
+
+const setupToggle = document.getElementById('setupToggle');
+const setupPanel = document.getElementById('setupPanel');
+setupToggle.addEventListener('click', ()=> setupPanel.hidden = !setupPanel.hidden);
+
+document.getElementById('appsScriptCodeBlock').textContent = APPS_SCRIPT_CODE;
+document.getElementById('copyScriptBtn').addEventListener('click', ()=>{
+  navigator.clipboard.writeText(APPS_SCRIPT_CODE).then(()=>{
+    const btn = document.getElementById('copyScriptBtn');
+    const original = btn.textContent;
+    btn.textContent = 'Copied ✓';
+    setTimeout(()=> btn.textContent = original, 1800);
+  }).catch(()=> alert('Could not copy automatically — please select and copy the code manually.'));
+});
+
+const sheetUrlInput = document.getElementById('sheetUrlInput');
+const sheetUrlStatus = document.getElementById('sheetUrlStatus');
+sheetUrlInput.value = getSheetWebAppUrl();
+document.getElementById('saveSheetUrlBtn').addEventListener('click', ()=>{
+  const val = sheetUrlInput.value.trim();
+  try{
+    if(val){ localStorage.setItem('gokaleSheetWebAppUrl', val); sheetUrlStatus.textContent = 'Saved ✓ — but only in this browser. For other participants, paste this URL into SHEET_WEBAPP_URL in the source and republish.'; }
+    else { localStorage.removeItem('gokaleSheetWebAppUrl'); sheetUrlStatus.textContent = 'Cleared — logging locally only.'; }
+  }catch(err){ sheetUrlStatus.textContent = 'Could not save (browser storage unavailable).'; }
+});
+
+/* =========================================================
+   PAYMENT
+   ========================================================= */
+document.getElementById('makePaymentBtn').addEventListener('click', ()=>{
+  const requiredFields = document.querySelectorAll('#step3Panel .pay-form input[required]');
+  let valid = true;
+  requiredFields.forEach(f=>{ if(!f.value.trim()) valid = false; });
+  if(!valid){ alert('Please fill in all payment details to proceed.'); return; }
+
+  const total = calcAndRenderFare();
+  const summary = buildSessionSummary(total);
+  saveSessionSummary(summary);
+  sendToGoogleSheet(summary);
+  document.getElementById('paymentModal').hidden = false;
+});
+
+document.getElementById('modalOkBtn').addEventListener('click', ()=>{
+  window.location.href = POST_SIMULATION_FORM_URL;
+});
+
+/* =========================================================
+   CONSENT GATE
+   ========================================================= */
+document.getElementById('consentAgreeBtn').addEventListener('click', ()=>{
+  document.getElementById('consentScreen').hidden = true;
+});
+document.getElementById('consentDeclineBtn').addEventListener('click', ()=>{
+  document.getElementById('consentScreen').innerHTML =
+    '<div class="consent-declined-msg">Thank you for your time. You have chosen not to participate in this study, and no data has been recorded. You may now close this window.</div>';
+});
+</script>
+</body>
+</html>
